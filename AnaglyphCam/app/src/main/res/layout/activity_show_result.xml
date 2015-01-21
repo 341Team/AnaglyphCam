@@ -5,11 +5,10 @@
     android:background="@color/primary_material_dark">
 
     <ImageView
+        android:id="@+id/res"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/res"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:contentDescription="Picture" />
 
     <ImageButton
         android:layout_width="100dp"
@@ -45,20 +44,28 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:id="@+id/button"
-        android:layout_alignParentTop="true"
+        android:onClick="Save"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="57dp"
-        android:onClick="Save" />
+        android:layout_alignLeft="@+id/right"
+        android:layout_alignStart="@+id/right" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share"
         android:id="@+id/ShareButton"
-        android:layout_alignBottom="@+id/button"
+        android:onClick="Share"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="Share" />
+        android:layout_alignRight="@+id/left"
+        android:layout_alignEnd="@+id/left" />
+
+    <Gallery
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gallery" />
 
 </RelativeLayout>
