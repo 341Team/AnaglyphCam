@@ -1,5 +1,6 @@
 package team341.com.anaglyphcam;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,13 +8,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.io.File;
 
@@ -23,8 +27,10 @@ public class ShowResult extends ActionBarActivity {
     ImageButton left;
     ImageButton right;
     String path;
+    Bitmap res_bi;
     Uri contentUri;
     int n;
+    FrameLayout container;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +38,13 @@ public class ShowResult extends ActionBarActivity {
 
         result = (ImageView) findViewById(R.id.res);
         path = getIntent().getStringExtra("result");
-        Bitmap res_bi = BitmapFactory.decodeFile(path);
+        res_bi = BitmapFactory.decodeFile(path);
+        container = (FrameLayout) findViewById(R.id.container);
+        double k = res_bi.getWidth()/res_bi.getHeight();
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,(int)(RelativeLayout.LayoutParams.MATCH_PARENT/k));
+        container.setLayoutParams(layoutParams);
         result.setImageBitmap(res_bi);
+
 
     }
     public void Save(View v)
@@ -49,6 +60,8 @@ public class ShowResult extends ActionBarActivity {
         });
         AlertDialog dialog = builder.show();
     }
+
+
     public void Share(View v)
     {
         galleryAddPic();
@@ -70,6 +83,9 @@ public class ShowResult extends ActionBarActivity {
     public void rotate_left(View v)
     {
         result.setRotation(result.getRotation()-90);
+        result.setImageBitmap(res_bi);
+
+        result.setScaleType(ImageView.ScaleType.FIT_CENTER);
     }
     public void rotate_right(View v)
     {

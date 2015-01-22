@@ -4,12 +4,19 @@
     tools:context="team341.com.anaglyphcam.ShowResult"
     android:background="@color/primary_material_dark">
 
-    <ImageView
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/res"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/container">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/res"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_beta" />
+    </FrameLayout>
 
     <ImageButton
         android:layout_width="100dp"

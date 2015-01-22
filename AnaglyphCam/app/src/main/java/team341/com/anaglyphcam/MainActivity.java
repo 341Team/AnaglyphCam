@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     File right;
     File pictures;
     File result_f;
-    ImageView instruction_p;
+    ImageView resul;
     TextView instruction;
     Bitmap result;
     final int CAMERA_ID = 0;
@@ -70,14 +70,14 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         Log.i("Log1", "created!!!");
         super.onCreate(savedInstanceState);
         pictures = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES+"/LeftRight");
         final Intent intent = new Intent(MainActivity.this, FullscreenActivity.class);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         n = 0;
         startActivity(intent);
-        //pictures = new File(pictures.getAbsolutePath()+);
         pictures.mkdirs();
         result_f = new File(pictures, "result.jpg");
         left = new File(pictures, "left.jpg");
@@ -93,9 +93,9 @@ public class MainActivity extends Activity {
         holderCallback = new HolderCallback();
         holder.addCallback(holderCallback);
         int cute =1;
+        resul = (ImageView) findViewById(R.id.resul);
         instruction = (TextView) findViewById(R.id.instruction);
-        //instruction_p = (ImageView) findViewById(R.id.instruction_pic);
-        //if (left.exists()||right.exists()) new makeResult().execute();
+
 
     }
 
@@ -103,11 +103,12 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         camera = Camera.open(CAMERA_ID);
-        setPreviewSize(FULL_SCREEN);
+        setPreviewSize(false);
         camera.stopPreview();
         try {
             camera.setPreviewDisplay(holder);
             camera.startPreview();
+            setCameraDisplayOrientation(CAMERA_ID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,9 +121,9 @@ public class MainActivity extends Activity {
             camera.setPreviewCallback(null);
             camera.stopPreview();
             camera.release();
-
+            camera = null;
         }
-        camera = null;
+
     }
 
     public void TakePhoto(View view) {
@@ -154,6 +155,9 @@ public class MainActivity extends Activity {
                                     fos.close();
                                     check = true;
                                     instruction.setText("Slightly move your device left or right");
+                                    resul.setImageBitmap(BitmapFactory.decodeFile(left.getAbsolutePath()));
+                                    //resul.setRotation(resul.getRotation()+90);
+
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -174,7 +178,7 @@ public class MainActivity extends Activity {
         }
         else
         {
-
+            resul.setImageBitmap(null);
             camera.takePicture(null, null, new Camera.PictureCallback() {
                 @Override
                 public void onPictureTaken(byte[] data, Camera camera) {
@@ -217,6 +221,7 @@ public class MainActivity extends Activity {
         public void surfaceCreated(SurfaceHolder holder) {
             try {
                 camera.setPreviewDisplay(holder);
+
                 camera.startPreview();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -226,14 +231,7 @@ public class MainActivity extends Activity {
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                    int height) {
-            camera.stopPreview();
             setCameraDisplayOrientation(CAMERA_ID);
-            try {
-                camera.setPreviewDisplay(holder);
-                camera.startPreview();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
@@ -340,6 +338,7 @@ public class MainActivity extends Activity {
             int width = left_bi.getWidth();
             FileOutputStream fos;
             result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
             for (int i = 0; i< height-1; i++)
                 for (int j = 0; j<width-1; j++)
                 {
